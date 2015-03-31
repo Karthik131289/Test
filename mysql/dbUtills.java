@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 
 /**
  * Created by DV21 on 06-03-2015.
@@ -42,6 +43,15 @@ public class dbUtills {
         statement.execute( queryString );
         statement.close();
     }
+    public static void deleteAllRecord( String tableName ) throws SQLException {
+        Statement statement = null;
+        String queryString  = null;
+
+        statement = getConnection().createStatement();
+        queryString = "DELETE FROM " + tableName + ";";
+        statement.execute( queryString );
+        statement.close();
+    }
     public static void insertRecord( String tableName , String[] fieldNames , Object[] fieldValues ) throws SQLException {
         Statement statement = null;
         String queryString  = null;
@@ -69,5 +79,63 @@ public class dbUtills {
 
         statement.execute( queryString );
         statement.close();
+    }
+
+    public static void selectRecord( String tableName , String[] fieldNames ) throws SQLException {
+        Statement statement = null;
+        String queryString  = null;
+
+        statement = getConnection().createStatement();
+
+        queryString = "SELECT ";
+        for( int i=0; i<fieldNames.length; i++ ){
+            queryString = queryString + fieldNames[i];
+            if( i!=(fieldNames.length-1) )
+                queryString = queryString + ",";
+            else
+                queryString = queryString + " FROM " + tableName + ";";
+        }
+
+        statement.execute( queryString );
+        statement.close();
+    }
+
+    public static void selectRecord( String tableName , String conditionStr , String[] fieldNames ) throws SQLException {
+        Statement statement = null;
+        String queryString  = null;
+
+        statement = getConnection().createStatement();
+
+        queryString = "SELECT ";
+        for( int i=0; i<fieldNames.length; i++ ){
+            queryString = queryString + fieldNames[i];
+            if( i!=(fieldNames.length-1) )
+                queryString = queryString + ",";
+            else
+                queryString = queryString + " FROM " + tableName + " WHERE " + conditionStr + ";";
+        }
+
+        statement.execute( queryString );
+        statement.close();
+    }
+
+    public static void selectRecord( String tableName ) throws SQLException {
+        Statement statement = null;
+        String queryString  = null;
+
+        statement = getConnection().createStatement();
+
+        queryString = "SELECT * FROM " + tableName + ";";
+
+        statement.execute( queryString );
+        statement.close();
+    }
+
+    public static void updateRecord( String tableName , HashMap<String,Object> fieldMap , String conditionStr ) throws SQLException {
+
+    }
+
+    public static void updateAllRecords( String tableName , HashMap<String,Object> fieldMap , String conditionStr ) throws SQLException {
+
     }
 }
